@@ -1,12 +1,18 @@
 import streamlit as st
 from sorter import ConveyorSystem
 import uuid
+import base64
 
 st.set_page_config(page_title="Sortir Warna", layout="centered")
 
 st.title("🚦 Simulasi Konveyor Sortir Warna")
 st.caption("Hanya kotak warna hijau yang boleh lewat.")
 
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        encoded = base64.b64encode(img_file.read()).decode()
+        return encoded
+    
 # Inisialisasi sistem jika belum ada di session_state
 if "system" not in st.session_state:
     st.session_state.system = ConveyorSystem()
@@ -80,3 +86,17 @@ if st.button("🔄 Simulasi"):
 
     st.markdown(animation_html, unsafe_allow_html=True)
     st.success(f"Warna kotak: {color.upper()} - {'Lolos ✅' if result == 'pass' else 'Disortir ❌'}")
+
+# footnote
+logo_base64 = get_base64_image("logoafr.png")  # Pastikan file ada di folder sama dengan app.py
+
+footer_html = f"""
+<div style="display: flex; align-items: center; justify-content: center; margin-top: 40px;">
+    <p style="margin-right: 10px; font-size: 16px; color: gray;">Created by</p>
+    <a href="https://instagram.com/afrozos" target="_blank">
+        <img src="data:image/png;base64,{logo_base64}" width="30" style="border-radius: 50%;">
+    </a>
+</div>
+"""
+
+st.markdown(footer_html, unsafe_allow_html=True)
